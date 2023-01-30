@@ -1,4 +1,4 @@
-# CINEMA APPLICATION
+# AUTO SERVICE APPLICATION
 **Description** 📄
 
 This project is a simple web application of the cinema that supports such functions:
@@ -38,6 +38,3 @@ The project based on N-Tier architecture:
 4. Install Tomcat
 5. Configure Tomcat Server
 6. Run the project (You can log in using username = admin@i.ua and password = admin)
-
-
-![whole schema_1](uml.jpg)# autoservice
