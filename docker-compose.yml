@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    platform: linux/x86_64
+    image: 'postgres:13.3'
+    container_name: db
+    environment:
+      - POSTGRES_USER=$POSTGRESQL_USER
+      - POSTGRES_PASSWORD=$POSTGRESQL_PASSWORD
+      - POSTGRES_DB=$POSTGRESQL_COMPOSE-POSTGRES
+  app:
+    depends_on:
+      - postgresql
+    image: vo/auto-service
+    build:
+      context: .
+    env_file: ./.env
+    container_name: app
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+      - $DEBUG_PORT:$DEBUG_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url" : "jdbc:postgresql://db:5432/COMPOSE-POSTGRES",
+        "spring.datasource.username" : "$POSTGRESQL_USER",
+        "spring.datasource.password" : "$POSTGRESQL_PASSWORD",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+        "spring.jpa.hibernate.ddl-auto" : "validate"
+      }'
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
